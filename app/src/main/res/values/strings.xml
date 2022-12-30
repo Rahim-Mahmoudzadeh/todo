@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="search">Search</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="hint_add_task">please add task</string>
+</resources>
