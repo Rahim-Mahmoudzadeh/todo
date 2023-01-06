@@ -15,4 +15,6 @@ interface RepositoryTask {
     fun deleteTask(task: Task)
 
     fun deleteTasks()
+
+    fun search(textSearch: String): List<Task>
 }

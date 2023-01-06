@@ -14,10 +14,13 @@ interface TaskDao {
     fun addTask(task: Task)
 
     @Query("SELECT * FROM tbl_task")
-    fun getTasks():List<Task>
+    fun getTasks(): List<Task>
 
     @Query("SELECT * FROM tbl_task WHERE id =:id")
     fun getTask(id: String): Task
+
+    @Query("SELECT * FROM tbl_task WHERE name LIKE '%' || :textSearch || '%'")
+    fun searchTask(textSearch: String): List<Task>
 
     @Update
     fun updateTask(task: Task)

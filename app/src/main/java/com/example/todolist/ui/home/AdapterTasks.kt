@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.todolist.data.model.Task
 import com.example.todolist.databinding.AdapterTaskBinding
 
-class AdapterTasks(val updateTask: UpdateTask) : RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
+class AdapterTasks(val clickTask: ClickTask) : RecyclerView.Adapter<AdapterTasks.ViewHolder>() {
 
     var tasks = ArrayList<Task>()
         set(value) {
@@ -20,10 +20,17 @@ class AdapterTasks(val updateTask: UpdateTask) : RecyclerView.Adapter<AdapterTas
             binding.cbAdapterTaskNameTask.isChecked = task.isChecked
 
             itemView.setOnClickListener {
-                updateTask.clickTask(task)
+                clickTask.clickTask(task)
             }
             binding.cbAdapterTaskNameTask.setOnClickListener {
-                updateTask.clickTask(task)
+                clickTask.clickTask(task)
+            }
+            itemView.setOnLongClickListener {
+                clickTask.update(task)
+                true
+            }
+            itemView.setOnClickListener {
+                clickTask.removeTask(task)
             }
         }
     }
@@ -44,7 +51,9 @@ class AdapterTasks(val updateTask: UpdateTask) : RecyclerView.Adapter<AdapterTas
 
     override fun getItemCount(): Int = tasks.size
 
-    interface UpdateTask{
+    interface ClickTask{
         fun clickTask(task: Task)
+        fun update(task:Task)
+        fun removeTask(task: Task)
     }
 }

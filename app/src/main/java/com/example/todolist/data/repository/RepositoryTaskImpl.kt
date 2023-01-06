@@ -19,4 +19,7 @@ class RepositoryTaskImpl(val dao: TaskDao):RepositoryTask {
     override fun deleteTasks() {
         dao.deleteAllTask()
     }
+
+    override fun search(textSearch: String): List<Task> = dao.searchTask(textSearch)
+
 }

@@ -6,7 +6,7 @@ import com.example.todolist.utils.BaseViewModel
 
 class HomeViewModel(val repositoryTask: RepositoryTask) : BaseViewModel() {
     fun addTask(task: Task) {
-         repositoryTask.addTask(task)
+        repositoryTask.addTask(task)
     }
 
     fun getTasks(): List<Task> {
@@ -21,7 +21,15 @@ class HomeViewModel(val repositoryTask: RepositoryTask) : BaseViewModel() {
         repositoryTask.deleteTasks()
     }
 
+    fun deleteTask(task: Task) {
+        repositoryTask.deleteTask(task)
+    }
+
     fun update(task: Task) {
         repositoryTask.updateTask(task)
+    }
+
+    fun searchTask(textSearch: String):List<Task> {
+        return repositoryTask.search(textSearch)
     }
 }
