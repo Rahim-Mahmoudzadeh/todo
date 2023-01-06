@@ -1,25 +1,32 @@
 package com.example.todolist.data.repository
 
+import androidx.lifecycle.LiveData
 import com.example.todolist.data.db.TaskDao
 import com.example.todolist.data.model.Task
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class RepositoryTaskImpl(val dao: TaskDao):RepositoryTask {
-    override fun addTask(task: Task) {
+class RepositoryTaskImpl(val dao: TaskDao) : RepositoryTask {
+    override suspend fun addTask(task: Task) {
         dao.addTask(task)
     }
 
-    override fun getTasks(): List<Task> = dao.getTasks()
+    override suspend fun getTasks(): LiveData<List<Task>> {
+        return dao.getTasks()
+    }
 
-    override fun getTask(id: String): Task = dao.getTask(id)
+    override suspend fun getTask(id: String): Task = dao.getTask(id)
 
-    override fun updateTask(task: Task) =dao.updateTask(task)
+    override suspend fun updateTask(task: Task) = dao.updateTask(task)
 
-    override fun deleteTask(task: Task) = dao.deleteTask(task)
+    override suspend fun deleteTask(task: Task) = dao.deleteTask(task)
 
-    override fun deleteTasks() {
+    override suspend fun deleteTasks() {
         dao.deleteAllTask()
     }
 
-    override fun search(textSearch: String): List<Task> = dao.searchTask(textSearch)
+    override suspend fun search(textSearch: String): LiveData<List<Task>> = dao.searchTask(textSearch)
 
 }

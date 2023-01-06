@@ -1,5 +1,6 @@
 package com.example.todolist.data.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -11,23 +12,23 @@ import com.example.todolist.data.model.Task
 interface TaskDao {
 
     @Insert()
-    fun addTask(task: Task)
+    suspend fun addTask(task: Task)
 
     @Query("SELECT * FROM tbl_task")
-    fun getTasks(): List<Task>
+    fun getTasks(): LiveData<List<Task>>
 
     @Query("SELECT * FROM tbl_task WHERE id =:id")
-    fun getTask(id: String): Task
+    suspend fun getTask(id: String): Task
 
     @Query("SELECT * FROM tbl_task WHERE name LIKE '%' || :textSearch || '%'")
-    fun searchTask(textSearch: String): List<Task>
+    fun searchTask(textSearch: String): LiveData<List<Task>>
 
     @Update
-    fun updateTask(task: Task)
+    suspend fun updateTask(task: Task)
 
     @Delete
-    fun deleteTask(task: Task)
+    suspend fun deleteTask(task: Task)
 
     @Query("DELETE FROM tbl_task")
-    fun deleteAllTask()
+    suspend fun deleteAllTask()
 }

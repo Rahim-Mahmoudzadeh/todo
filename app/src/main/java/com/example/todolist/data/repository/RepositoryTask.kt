@@ -1,20 +1,21 @@
 package com.example.todolist.data.repository
 
+import androidx.lifecycle.LiveData
 import com.example.todolist.data.model.Task
 
 interface RepositoryTask {
 
-    fun addTask(task: Task)
+    suspend fun addTask(task: Task)
 
-    fun getTasks(): List<Task>
+    suspend fun getTasks(): LiveData<List<Task>>
 
-    fun getTask(id: String): Task
+    suspend fun getTask(id: String): Task
 
-    fun updateTask(task: Task)
+    suspend fun updateTask(task: Task)
 
-    fun deleteTask(task: Task)
+    suspend fun deleteTask(task: Task)
 
-    fun deleteTasks()
+    suspend fun deleteTasks()
 
-    fun search(textSearch: String): List<Task>
+    suspend fun search(textSearch: String): LiveData<List<Task>>
 }

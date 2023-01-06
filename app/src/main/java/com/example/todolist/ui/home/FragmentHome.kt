@@ -6,6 +6,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todolist.data.model.Task
 import com.example.todolist.databinding.FragmentHomeBinding
@@ -14,6 +17,8 @@ import com.example.todolist.utils.BaseFragment
 import com.example.todolist.utils.Constant.TASK
 import com.example.todolist.utils.Constant.TASK_CHECK
 import com.example.todolist.utils.Constant.TASK_NAME
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickTask {
@@ -67,20 +72,27 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
         }
         binding.ivFragmentHomeDeleteTask.setOnClickListener {
             homeViewModel.deleteAllTask()
+            homeViewModel.getTasks
             getTasks()
         }
     }
 
     private fun getTasks() {
-        val tasks = homeViewModel.getTasks()
-        adapterTasks.tasks = tasks as ArrayList<Task>
-        setRecyclerView()
+        homeViewModel.getTasks.observe(viewLifecycleOwner) {
+            it?.let { tasks ->
+                adapterTasks.tasks = tasks as ArrayList<Task>
+                setRecyclerView()
+            }
+        }
     }
 
     private fun searchTask(textSearch: String) {
-        val tasks = homeViewModel.searchTask(textSearch)
-        adapterTasks.tasks = tasks as ArrayList<Task>
-        setRecyclerView()
+        homeViewModel.searchTask(textSearch).observe(requireActivity()) {
+            it?.let { tasks ->
+                adapterTasks.tasks = tasks as ArrayList<Task>
+                setRecyclerView()
+            }
+        }
     }
 
     private fun setRecyclerView() {
@@ -92,16 +104,19 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
 
     override fun addTask(task: Task) {
         homeViewModel.addTask(task)
+        homeViewModel.getTasks
         getTasks()
     }
 
     override fun updateTask(task: Task) {
         homeViewModel.update(task)
+        homeViewModel.getTasks
         getTasks()
     }
 
     override fun clickTask(task: Task) {
         homeViewModel.update(task.apply { isChecked = !task.isChecked })
+        homeViewModel.getTasks
         getTasks()
     }
 
@@ -116,6 +131,7 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
 
     override fun removeTask(task: Task) {
         homeViewModel.deleteTask(task)
+        homeViewModel.getTasks
         getTasks()
     }
 }
