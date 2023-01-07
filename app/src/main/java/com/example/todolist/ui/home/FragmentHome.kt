@@ -72,8 +72,6 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
         }
         binding.ivFragmentHomeDeleteTask.setOnClickListener {
             homeViewModel.deleteAllTask()
-            homeViewModel.getTasks
-            getTasks()
         }
     }
 
@@ -87,7 +85,7 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
     }
 
     private fun searchTask(textSearch: String) {
-        homeViewModel.searchTask(textSearch).observe(requireActivity()) {
+        homeViewModel.searchTask(textSearch).observe(viewLifecycleOwner) {
             it?.let { tasks ->
                 adapterTasks.tasks = tasks as ArrayList<Task>
                 setRecyclerView()
@@ -104,20 +102,14 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
 
     override fun addTask(task: Task) {
         homeViewModel.addTask(task)
-        homeViewModel.getTasks
-        getTasks()
     }
 
     override fun updateTask(task: Task) {
         homeViewModel.update(task)
-        homeViewModel.getTasks
-        getTasks()
     }
 
     override fun clickTask(task: Task) {
         homeViewModel.update(task.apply { isChecked = !task.isChecked })
-        homeViewModel.getTasks
-        getTasks()
     }
 
     override fun update(task: Task) {
@@ -131,7 +123,5 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
 
     override fun removeTask(task: Task) {
         homeViewModel.deleteTask(task)
-        homeViewModel.getTasks
-        getTasks()
     }
 }
