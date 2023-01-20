@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.todolist.data.model.Task
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
@@ -15,13 +16,13 @@ interface TaskDao {
     suspend fun addTask(task: Task)
 
     @Query("SELECT * FROM tbl_task")
-    fun getTasks(): LiveData<List<Task>>
+    fun getTasks(): Flow<List<Task>>
 
     @Query("SELECT * FROM tbl_task WHERE id =:id")
     suspend fun getTask(id: String): Task
 
     @Query("SELECT * FROM tbl_task WHERE name LIKE '%' || :textSearch || '%'")
-    fun searchTask(textSearch: String): LiveData<List<Task>>
+    fun searchTask(textSearch: String): Flow<List<Task>>
 
     @Update
     suspend fun updateTask(task: Task)

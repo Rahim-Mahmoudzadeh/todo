@@ -2,12 +2,13 @@ package com.example.todolist.data.repository
 
 import androidx.lifecycle.LiveData
 import com.example.todolist.data.model.Task
+import kotlinx.coroutines.flow.Flow
 
 interface RepositoryTask {
 
     suspend fun addTask(task: Task)
 
-    suspend fun getTasks(): LiveData<List<Task>>
+    suspend fun getTasks(): Flow<List<Task>>
 
     suspend fun getTask(id: String): Task
 
@@ -17,5 +18,5 @@ interface RepositoryTask {
 
     suspend fun deleteTasks()
 
-    suspend fun search(textSearch: String): LiveData<List<Task>>
+    suspend fun search(textSearch: String): Flow<List<Task>>
 }

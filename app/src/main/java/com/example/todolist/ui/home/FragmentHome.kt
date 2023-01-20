@@ -26,7 +26,6 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
     private val binding get() = _binding!!
     private val fragmentDialog = FragmentDialog(this)
     private val homeViewModel by viewModel<HomeViewModel>()
-    var rahim: String? = null
 
     private val adapterTasks = AdapterTasks(this)
 
@@ -44,6 +43,7 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
         getTasks()
         onClick()
         getSearchText()
+        setRecyclerView()
     }
 
     private fun getSearchText() {
@@ -56,7 +56,7 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
                 if (text != null) {
                     searchTask(text.toString())
                 } else {
-                    getTasks()
+//                    getTasks()
                 }
             }
 
@@ -76,10 +76,9 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
     }
 
     private fun getTasks() {
-        homeViewModel.getTasks.observe(viewLifecycleOwner) {
+        homeViewModel.tasks.observe(viewLifecycleOwner) {
             it?.let { tasks ->
                 adapterTasks.tasks = tasks as ArrayList<Task>
-                setRecyclerView()
             }
         }
     }
@@ -88,7 +87,6 @@ class FragmentHome : BaseFragment(), FragmentDialog.AddTask, AdapterTasks.ClickT
         homeViewModel.searchTask(textSearch).observe(viewLifecycleOwner) {
             it?.let { tasks ->
                 adapterTasks.tasks = tasks as ArrayList<Task>
-                setRecyclerView()
             }
         }
     }

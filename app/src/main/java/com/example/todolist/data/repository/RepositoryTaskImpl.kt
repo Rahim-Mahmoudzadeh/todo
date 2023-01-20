@@ -6,6 +6,7 @@ import com.example.todolist.data.model.Task
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class RepositoryTaskImpl(val dao: TaskDao) : RepositoryTask {
@@ -13,7 +14,7 @@ class RepositoryTaskImpl(val dao: TaskDao) : RepositoryTask {
         dao.addTask(task)
     }
 
-    override suspend fun getTasks(): LiveData<List<Task>> {
+    override suspend fun getTasks(): Flow<List<Task>> {
         return dao.getTasks()
     }
 
@@ -27,6 +28,6 @@ class RepositoryTaskImpl(val dao: TaskDao) : RepositoryTask {
         dao.deleteAllTask()
     }
 
-    override suspend fun search(textSearch: String): LiveData<List<Task>> = dao.searchTask(textSearch)
+    override suspend fun search(textSearch: String): Flow<List<Task>> = dao.searchTask(textSearch)
 
 }
